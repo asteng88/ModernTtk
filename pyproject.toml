@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "moderntkk"
+version = "0.2.0"
+description = "Hybrid modern Tkinter & ttk styling and anti-aliased custom widget library inspired by sv_ttk and ttkbootstrap."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "Pillow>=9.5.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["moderntkk*"]
