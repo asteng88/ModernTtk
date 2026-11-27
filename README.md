@@ -1,6 +1,6 @@
-# ModernTkk
+# ModernTtk
 
-**ModernTkk** is a hybrid Python Tkinter & `ttk` UI library that blends the clean **Windows 11 Fluent Design** surfaces of `sv_ttk` with the **semantic color roles and rich component suite** of `ttkbootstrap`—powered by 4× supersampled Pillow (`PIL`) rendering for crisp, anti-aliased rounded corners, procedural vector icons, and smooth animations.
+**ModernTtk** is a hybrid Python Tkinter & `ttk` UI library that blends the clean **Windows 11 Fluent Design** surfaces of `sv_ttk` with the **semantic color roles and rich component suite** of `ttkbootstrap`—powered by 4× supersampled Pillow (`PIL`) rendering for crisp, anti-aliased rounded corners, procedural vector icons, and smooth animations.
 
 ## Highlights
 
