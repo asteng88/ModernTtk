@@ -3,15 +3,52 @@ requires = ["setuptools>=68.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "moderntkk"
+name = "modernttk"
 version = "0.2.0"
-description = "Hybrid modern Tkinter & ttk styling and anti-aliased custom widget library inspired by sv_ttk and ttkbootstrap."
+description = "Hybrid modern Tkinter & ttk UI styling and anti-aliased custom widget library inspired by Windows 11 Fluent Design (sv_ttk) and ttkbootstrap."
 readme = "README.md"
+license = { file = "LICENSE" }
 requires-python = ">=3.10"
+authors = [
+    { name = "Andrew Thomas" },
+]
+keywords = [
+    "tkinter",
+    "ttk",
+    "gui",
+    "ui",
+    "fluent-design",
+    "ttkbootstrap",
+    "sv-ttk",
+    "dark-mode",
+    "widgets",
+    "gauges",
+    "dashboard",
+    "pillow",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: User Interfaces",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
 dependencies = [
     "Pillow>=9.5.0",
 ]
 
+[project.urls]
+Homepage = "https://github.com/asteng88/ModernTtk"
+Repository = "https://github.com/asteng88/ModernTtk"
+Issues = "https://github.com/asteng88/ModernTtk/issues"
+Changelog = "https://github.com/asteng88/ModernTtk/blob/main/CHANGELOG.md"
+
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["moderntkk*"]
+include = ["modernttk*"]

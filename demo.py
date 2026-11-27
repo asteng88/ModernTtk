@@ -1,4 +1,4 @@
-"""Interactive Showcase Gallery for ModernTkk.
+"""Interactive Showcase Gallery for ModernTtk.
 
 Run with:
     python demo.py
@@ -10,13 +10,13 @@ import datetime as dt
 import tkinter as tk
 from tkinter import ttk
 
-import moderntkk as mtk
+import modernttk as mtk
 
 
 class ShowcaseApp(mtk.ModernWindow):
     def __init__(self) -> None:
         super().__init__(
-            title="ModernTkk — Hybrid Fluent & Bootstrap UI Suite for Tkinter",
+            title="ModernTtk — Hybrid Fluent & Bootstrap UI Suite for Tkinter",
             themename="fluent_dark",
             geometry="1280x880",
         )
@@ -34,7 +34,7 @@ class ShowcaseApp(mtk.ModernWindow):
 
         self.title_lbl = mtk.ModernLabel(
             left,
-            text="✦ ModernTkk Studio",
+            text="✦ ModernTtk Studio",
             font_size_delta=4,
             bold=True,
         )
@@ -49,6 +49,7 @@ class ShowcaseApp(mtk.ModernWindow):
                 "Components",
                 "Calendar & Inputs",
                 "Tabs & Data",
+                "Gauges Gallery",
                 "Gauges, Logs & Pro",
                 "Enterprise & RCCP",
             ],
@@ -133,7 +134,8 @@ class ShowcaseApp(mtk.ModernWindow):
         self.sidebar.add_item("Calendar & Inputs", "Calendar & Inputs", icon="calendar")
         self.sidebar.add_item("Tabs & Data", "Tabs & Data", icon="folder", badge="6")
         self.sidebar.add_section("Advanced & Pro")
-        self.sidebar.add_item("Gauges, Logs & Pro", "Gauges, Logs & Pro", icon="terminal", badge="New")
+        self.sidebar.add_item("Gauges Gallery", "Gauges Gallery", icon="activity", badge="6+")
+        self.sidebar.add_item("Gauges, Logs & Pro", "Gauges, Logs & Pro", icon="terminal")
         self.sidebar.add_item("Enterprise & RCCP", "Enterprise & RCCP", icon="settings")
 
         self.pages_container = mtk.ModernFrame(self.body_wrap, padx=18, pady=18)
@@ -143,6 +145,7 @@ class ShowcaseApp(mtk.ModernWindow):
             "Components": mtk.ModernFrame(self.pages_container),
             "Calendar & Inputs": mtk.ModernFrame(self.pages_container),
             "Tabs & Data": mtk.ModernFrame(self.pages_container),
+            "Gauges Gallery": mtk.ModernFrame(self.pages_container),
             "Gauges, Logs & Pro": mtk.ModernFrame(self.pages_container),
             "Enterprise & RCCP": mtk.ModernFrame(self.pages_container),
         }
@@ -150,6 +153,7 @@ class ShowcaseApp(mtk.ModernWindow):
         self._populate_components_page(self.pages["Components"])
         self._populate_calendar_inputs_page(self.pages["Calendar & Inputs"])
         self._populate_ttk_page(self.pages["Tabs & Data"])
+        self._populate_gauges_gallery_page(self.pages["Gauges Gallery"])
         self._populate_pro_page(self.pages["Gauges, Logs & Pro"])
         self._populate_enterprise_page(self.pages["Enterprise & RCCP"])
 
@@ -663,7 +667,7 @@ class ShowcaseApp(mtk.ModernWindow):
 
         mtk.ModernLabel(
             btns_tab,
-            text="Standard ttk.Button widgets styled automatically by ModernTkk's ThemeManager:",
+            text="Standard ttk.Button widgets styled automatically by ModernTtk's ThemeManager:",
             muted=True,
         ).pack(anchor="w", pady=(0, 10))
         btn_bar = mtk.ModernFrame(btns_tab)
@@ -674,6 +678,230 @@ class ShowcaseApp(mtk.ModernWindow):
                 text=f"ttk.{role}",
                 style=f"{role}.TButton",
             ).pack(side="left", padx=(0, 8), anchor="n")
+
+    def _populate_gauges_gallery_page(self, parent: mtk.ModernFrame) -> None:
+        import random
+
+        parent.columnconfigure(0, weight=1)
+        parent.columnconfigure(1, weight=1)
+        parent.rowconfigure(0, weight=1)
+        parent.rowconfigure(1, weight=1)
+
+        # 1. Top-Left: Semi-Circle Arch + Speedometer Needle Dial
+        dial_card = mtk.ModernCard(
+            parent,
+            title="Arch & Instrument Dial Gauges (SemiGauge & Speedometer)",
+            subtitle="180° KPI half-circle arch with target tick + 240° needle dial with semantic color zones.",
+        )
+        dial_card.grid(row=0, column=0, sticky="nsew", padx=(0, 10), pady=(0, 10))
+
+        dial_row = mtk.ModernFrame(dial_card.body)
+        dial_row.pack(fill="x", pady=(4, 8))
+
+        semi = mtk.ModernSemiGauge(
+            dial_row,
+            value=76,
+            target=85,
+            subtext="SLA Target 85%",
+            bootstyle="primary",
+            thresholds=[(85, "success")],
+            width=210,
+            height=134,
+        )
+        semi.pack(side="left", padx=(0, 16))
+
+        speedo = mtk.ModernSpeedometer(
+            dial_row,
+            value=68,
+            size=186,
+            subtext="Plant Load",
+            bootstyle="primary",
+            thresholds=[(60, "warning"), (85, "danger")],
+        )
+        speedo.pack(side="left")
+
+        mtk.ModernSlider(
+            dial_card.body,
+            from_=0,
+            to=100,
+            value=72,
+            command=lambda v: (semi.set(v, animate=False), speedo.set(v, animate=False)),
+            width=420,
+        ).pack(fill="x", pady=(4, 0))
+
+        # 2. Top-Right: Animated Liquid Tank + Concentric Multi-Ring Activity Gauge
+        orb_card = mtk.ModernCard(
+            parent,
+            title="Liquid Tank & Activity Rings (LiquidGauge & MultiRingGauge)",
+            subtitle="30 FPS dual-sine-wave liquid orb + concentric multi-metric OEE rings with live legend.",
+        )
+        orb_card.grid(row=0, column=1, sticky="nsew", padx=(10, 0), pady=(0, 10))
+
+        orb_row = mtk.ModernFrame(orb_card.body)
+        orb_row.pack(fill="x", pady=(4, 8))
+
+        liquid = mtk.ModernLiquidGauge(
+            orb_row,
+            value=64,
+            size=164,
+            subtext="Reservoir",
+            bootstyle="info",
+            thresholds=[(78, "warning"), (92, "danger")],
+        )
+        liquid.pack(side="left", padx=(0, 14))
+
+        rings = mtk.ModernMultiRingGauge(
+            orb_row,
+            rings=[
+                {"label": "Availability", "value": 92, "bootstyle": "primary"},
+                {"label": "Performance", "value": 81, "bootstyle": "success"},
+                {"label": "Quality", "value": 96, "bootstyle": "info"},
+            ],
+            size=164,
+        )
+        rings.pack(side="left")
+
+        orb_btns = mtk.ModernFrame(orb_card.body)
+        orb_btns.pack(fill="x", pady=(6, 0))
+
+        def _randomize_orb_and_rings() -> None:
+            liquid.set(random.randint(15, 96))
+            rings.set_values([random.randint(45, 99), random.randint(45, 99), random.randint(55, 99)])
+
+        mtk.ModernButton(
+            orb_btns,
+            text="Animate Random Values",
+            icon="sparkles",
+            bootstyle="primary-subtle",
+            height=30,
+            command=_randomize_orb_and_rings,
+        ).pack(side="left", padx=(0, 8))
+
+        mtk.ModernButton(
+            orb_btns,
+            text="High Alert (94%)",
+            bootstyle="danger-outline",
+            height=30,
+            command=lambda: (liquid.set(94), rings.set_values([98, 91, 95])),
+        ).pack(side="left")
+
+        # 3. Bottom-Left: Segmented LED Gauges (Arc & Bar)
+        seg_card = mtk.ModernCard(
+            parent,
+            title="Segmented LED Meters (ModernSegmentedGauge)",
+            subtitle="Discrete rounded LED blocks in both radial arc and horizontal VU-bar styles.",
+        )
+        seg_card.grid(row=1, column=0, sticky="nsew", padx=(0, 10), pady=(10, 0))
+
+        seg_row = mtk.ModernFrame(seg_card.body)
+        seg_row.pack(fill="both", expand=True, pady=4)
+
+        seg_arc = mtk.ModernSegmentedGauge(
+            seg_row,
+            value=74,
+            style="arc",
+            segments=18,
+            size=164,
+            subtext="Thermal",
+        )
+        seg_arc.pack(side="left", padx=(0, 16))
+
+        seg_col = mtk.ModernFrame(seg_row)
+        seg_col.pack(side="left", fill="both", expand=True)
+
+        seg_bar1 = mtk.ModernSegmentedGauge(
+            seg_col,
+            value=82,
+            style="bar",
+            segments=20,
+            subtext="GPU Compute Cluster",
+            width=260,
+            height=64,
+        )
+        seg_bar1.pack(fill="x", pady=(6, 10))
+
+        seg_bar2 = mtk.ModernSegmentedGauge(
+            seg_col,
+            value=48,
+            style="bar",
+            segments=20,
+            gradient_roles=("info", "primary"),
+            subtext="Network Bandwidth",
+            textsuffix=" Gbps",
+            width=260,
+            height=64,
+        )
+        seg_bar2.pack(fill="x")
+
+        mtk.ModernSlider(
+            seg_card.body,
+            from_=0,
+            to=100,
+            value=74,
+            command=lambda v: (
+                seg_arc.set(v, animate=False),
+                seg_bar1.set(v, animate=False),
+                seg_bar2.set(max(0, min(100, v * 0.72)), animate=False),
+            ),
+            width=420,
+        ).pack(fill="x", pady=(6, 0))
+
+        # 4. Bottom-Right: Executive Linear / Bullet Gauges
+        lin_card = mtk.ModernCard(
+            parent,
+            title="Executive Bullet & Scale Gauges (ModernLinearGauge)",
+            subtitle="Qualitative range bands, primary measure bar, benchmark target line, and calibrated ticks.",
+        )
+        lin_card.grid(row=1, column=1, sticky="nsew", padx=(10, 0), pady=(10, 0))
+
+        lin1 = mtk.ModernLinearGauge(
+            lin_card.body,
+            title="On-Time Delivery Rate",
+            value=88,
+            target=90,
+            bootstyle="success",
+            width=420,
+        )
+        lin1.pack(fill="x", pady=(2, 8))
+
+        lin2 = mtk.ModernLinearGauge(
+            lin_card.body,
+            title="Weekly Capacity Utilization",
+            value=93,
+            target=85,
+            bootstyle="primary",
+            thresholds=[(85, "warning"), (92, "danger")],
+            width=420,
+        )
+        lin2.pack(fill="x", pady=(0, 8))
+
+        lin3 = mtk.ModernLinearGauge(
+            lin_card.body,
+            title="Quarterly Revenue Target",
+            value=740,
+            minimum=0,
+            maximum=1000,
+            target=850,
+            ranges=(500, 800, 1000),
+            textprefix="$",
+            textsuffix="k",
+            bootstyle="info",
+            width=420,
+        )
+        lin3.pack(fill="x", pady=(0, 6))
+
+        mtk.ModernButton(
+            lin_card.body,
+            text="Simulate Live Telemetry Burst",
+            icon="refresh",
+            bootstyle="info-outline",
+            height=30,
+            command=lambda: (
+                lin1.set(random.randint(60, 99)),
+                lin2.set(random.randint(55, 98)),
+                lin3.set(random.randint(420, 960)),
+            ),
+        ).pack(anchor="w", pady=(4, 0))
 
     def _populate_pro_page(self, parent: mtk.ModernFrame) -> None:
         parent.columnconfigure(0, weight=1)
@@ -750,7 +978,7 @@ class ShowcaseApp(mtk.ModernWindow):
             height=136,
         )
         log_view.pack(fill="both", expand=True, pady=(0, 8))
-        log_view.append_log("ModernTkk v0.2.0 initialized (4x supersampled PIL engine).", "INFO")
+        log_view.append_log("ModernTtk v0.2.0 initialized (4x supersampled PIL engine).", "INFO")
         log_view.append_log("Connected to primary analytics database (11.4 ms).", "SUCCESS")
         log_view.append_log("Worker pool #3 approaching 85% utilization threshold.", "WARNING")
         log_view.append_log("Retry scheduled for webhook endpoint eu-west-1.", "ERROR")
@@ -956,8 +1184,8 @@ class ShowcaseApp(mtk.ModernWindow):
         )
         right_card = mtk.ModernCard(
             bottom_split,
-            title="Splash Screen, Progress Dialog & Chart Adapters",
-            subtitle="Launch the glassmorphic ModernSplash or modal ModernProgressDialog from Capacity.",
+            title="Animated Chronograph Timer, Splash & Progress Dialog",
+            subtitle="30 FPS subpixel-anti-aliased ActivityTimer + uninterrupted BusyOverlay / SubprocessWorker.",
         )
         bottom_split.add(left_card, weight=1)
         bottom_split.add(right_card, weight=1)
@@ -977,28 +1205,77 @@ class ShowcaseApp(mtk.ModernWindow):
             sw.set(True)
             sw.pack(side="right")
 
-        btn_col = mtk.ModernFrame(right_card.body)
-        btn_col.pack(fill="x", pady=6)
+        right_row = mtk.ModernFrame(right_card.body)
+        right_row.pack(fill="both", expand=True, pady=4)
+
+        btn_col = mtk.ModernFrame(right_row)
+        btn_col.pack(side="left", fill="both", expand=True, pady=2)
+
+        live_timer = mtk.ModernActivityTimer(
+            right_row,
+            bootstyle="primary",
+            autostart=True,
+        )
+        live_timer.pack(side="right", padx=(12, 4))
+
+        stream_box = mtk.ModernFrame(right_card.body)
+        stream_box.pack(fill="x", pady=(8, 0))
+
+        stream_hdr = mtk.ModernFrame(stream_box)
+        stream_hdr.pack(fill="x", pady=(0, 4))
+        mtk.ModernLabel(
+            stream_hdr,
+            text="Long-Running Data Stream Animation:",
+            bold=True,
+        ).pack(side="left")
+
+        live_stream = mtk.ModernDataStream(
+            stream_box,
+            direction="db_to_pc",
+            bootstyle="primary",
+            autostart=True,
+        )
+
+        def _on_stream_dir(label: str) -> None:
+            mapping = {
+                "DB → PC": "db_to_pc",
+                "PC → DB": "pc_to_db",
+                "Sync ⇄": "bidirectional",
+            }
+            live_stream.set_direction(mapping.get(label, "db_to_pc"))
+
+        mtk.ModernSegmentedButton(
+            stream_hdr,
+            values=["DB → PC", "PC → DB", "Sync ⇄"],
+            default="DB → PC",
+            command=_on_stream_dir,
+            pill=True,
+        ).pack(side="right")
+
+        live_stream.pack(anchor="center", pady=(4, 2))
 
         def _demo_progress_dialog() -> None:
             dlg = mtk.ModernProgressDialog(
                 self,
                 title="Running Auto-Optimizer",
-                message="Leveling weekly capacity & demand...",
+                message="Streaming dataset from SQLite database...",
                 bootstyle="primary",
+                animation="data_stream",
+                stream_direction="db_to_pc",
             )
             steps = [
-                (25, "Loading active resource groups..."),
-                (55, "Solving weekly shift & overtime constraints..."),
-                (85, "Building smoothing plan..."),
-                (100, "Optimization complete!"),
+                (25, "Streaming active resource groups from Database...", "db_to_pc"),
+                (55, "Solving weekly shift & overtime constraints...", "bidirectional"),
+                (85, "Writing optimized capacity plan back to Database...", "pc_to_db"),
+                (100, "Optimization complete!", "pc_to_db"),
             ]
 
             def _step(i: int = 0) -> None:
                 if i < len(steps):
-                    pct, msg = steps[i]
+                    pct, msg, direction = steps[i]
+                    dlg.set_stream_direction(direction)
                     dlg.update(pct, msg)
-                    self.after(350, lambda: _step(i + 1))
+                    self.after(650, lambda: _step(i + 1))
                 else:
                     dlg.destroy()
                     mtk.ModernToast.show(
@@ -1008,14 +1285,14 @@ class ShowcaseApp(mtk.ModernWindow):
                         bootstyle="success",
                     )
 
-            self.after(250, _step)
+            self.after(450, _step)
 
         def _demo_splash() -> None:
             sp = mtk.ModernSplash(
                 self,
                 title="RCCP Analytics Suite",
                 subtitle="Rough Cut Capacity Planning & Simulation Engine",
-                version="v1.2.0 ModernTkk Edition",
+                version="v1.2.0 ModernTtk Edition",
                 footer="Glassmorphic Pillow Splash Screen Preview",
                 bootstyle="info",
             )
@@ -1053,12 +1330,13 @@ class ShowcaseApp(mtk.ModernWindow):
         ).pack(anchor="w", pady=6)
 
         mtk.ModernLabel(
-            right_card.body,
+            btn_col,
             text=(
-                "Also included in moderntkk:\n"
-                "• mtk.style_matplotlib_figure(fig, ax) — Live theme sync for Matplotlib\n"
-                "• mtk.style_matplotlib_toolbar(toolbar) — Flat themed chart toolbar\n"
-                "• mtk.style_tksheet(sheet) — Full theme sync for tksheet grids\n"
+                "Also included in modernttk:\n"
+                "• mtk.DataStream — 30 FPS Database ⇄ Computer streaming animation\n"
+                "• mtk.ActivityTimer & mtk.BusyOverlay — 30 FPS chronograph timer / auto data stream\n"
+                "• mtk.SubprocessWorker & mtk.TaskRunner — GIL-free uninterrupted execution\n"
+                "• mtk.style_matplotlib_figure(fig, ax) & mtk.style_tksheet(sheet)\n"
                 "• Built-in 'rccp_blue', 'rccp_teal', and 'rccp_fuchsia' themes!"
             ),
             muted=True,

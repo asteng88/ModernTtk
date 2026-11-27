@@ -1,12 +1,12 @@
-# ModernTkk — Complete Developer Guide & API Reference
+# ModernTtk — Complete Developer Guide & API Reference
 
-**ModernTkk** is a next-generation UI styling and custom widget library for Python's `tkinter` and `tkinter.ttk`. It combines the clean **Windows 11 Fluent Design** surface aesthetics of `sv_ttk` with the **semantic color roles and rich component suite** of `ttkbootstrap`—powered by a **4× supersampled Pillow (`PIL`) anti-aliased rendering engine** for crisp rounded corners, smooth 60 FPS animations, and zero-artifact live theme switching.
+**ModernTtk** is a next-generation UI styling and custom widget library for Python's `tkinter` and `tkinter.ttk`. It combines the clean **Windows 11 Fluent Design** surface aesthetics of `sv_ttk` with the **semantic color roles and rich component suite** of `ttkbootstrap`—powered by a **4× supersampled Pillow (`PIL`) anti-aliased rendering engine** for crisp rounded corners, smooth 60 FPS animations, and zero-artifact live theme switching.
 
 ---
 
 ## Table of Contents
 
-1. [Why ModernTkk?](#1-why-moderntkk)
+1. [Why ModernTtk?](#1-why-modernttk)
 2. [Installation & Requirements](#2-installation--requirements)
 3. [Quick Start](#3-quick-start)
 4. [Theming & Palette System](#4-theming--palette-system)
@@ -30,18 +30,19 @@
    - [Modal Progress Dialog (`ProgressDialog`)](#64-modal-progress-dialog)
    - [Glassmorphic Startup Splash Screen (`Splash`)](#65-glassmorphic-startup-splash-screen)
    - [Third-Party Integrations (`Matplotlib`, `tksheet`, Responsive Layouts)](#66-third-party-integrations)
+   - [Animated Chronograph Timer, `BusyOverlay` & Uninterrupted Execution (`ActivityTimer`, `BusyOverlay`, `SubprocessWorker`, `TaskRunner`)](#67-animated-chronograph-timer-busyoverlay--uninterrupted-execution)
 7. [Migrating from `sv_ttk` and `ttkbootstrap`](#7-migrating-from-sv_ttk-and-ttkbootstrap)
 8. [Packaging & Releasing to GitHub / PyPI](#8-packaging--releasing-to-github--pypi)
 
 ---
 
-## 1. Why ModernTkk?
+## 1. Why ModernTtk?
 
 Traditional Tkinter themes often force a trade-off:
 - **`sv_ttk`** gives you gorgeous Windows 11 light/dark surfaces, but is limited to standard `ttk` widget types and static sprite-sheet themes.
 - **`ttkbootstrap`** gives you semantic color roles (`primary`, `success`, `danger`) and extra utilities, but native `ttk` drawing still produces jagged or boxy corners on custom-sized buttons, inputs, and tables.
 
-**ModernTkk** bridges both worlds with a **Hybrid Architecture**:
+**ModernTtk** bridges both worlds with a **Hybrid Architecture**:
 1. **Dynamic `ttk` Theme Engine**: Automatically styles all standard `ttk` widgets (`ttk.Button`, `ttk.Entry`, `ttk.Combobox`, `ttk.Treeview`, `ttk.Notebook`, `ttk.PanedWindow`, `ttk.LabelFrame`) so existing Tkinter code looks modern immediately.
 2. **Supersampled Custom Widget Suite**: Provides drop-in custom widgets rendered at 4× resolution with `Pillow` (`ImageDraw.rounded_rectangle` + `LANCZOS` downsampling) and LRU-cached `PhotoImage` objects—delivering razor-sharp rounded corners, animated pill switches, interactive calendars, and modern data tables.
 
@@ -54,8 +55,8 @@ Traditional Tkinter themes often force a trade-off:
 
 ### Local / Editable Installation
 ```bash
-git clone https://github.com/<your-username>/moderntkk.git
-cd moderntkk
+git clone https://github.com/<your-username>/modernttk.git
+cd modernttk
 pip install -e .
 ```
 
@@ -68,14 +69,14 @@ python demo.py
 
 ## 3. Quick Start
 
-You can either use `mtk.ModernWindow` as your root window, or apply ModernTkk to an existing `tk.Tk()` instance with `mtk.set_theme()`.
+You can either use `mtk.ModernWindow` as your root window, or apply ModernTtk to an existing `tk.Tk()` instance with `mtk.set_theme()`.
 
 ```python
-import moderntkk as mtk
+import modernttk as mtk
 
 # 1. Create a DPI-aware themed root window
 app = mtk.ModernWindow(
-    title="ModernTkk Quick Start",
+    title="ModernTtk Quick Start",
     themename="fluent_dark",
     geometry="720x480",
 )
@@ -130,7 +131,7 @@ app.mainloop()
 
 ### Built-In Themes
 
-ModernTkk ships with **10 built-in themes** spanning Windows 11 Fluent Design, Bootstrap/Tailwind palettes, and enterprise analytics themes:
+ModernTtk ships with **10 built-in themes** spanning Windows 11 Fluent Design, Bootstrap/Tailwind palettes, and enterprise analytics themes:
 
 | Theme Name | Mode | Aesthetic Inspiration | Primary Accent |
 | :--- | :--- | :--- | :--- |
@@ -167,10 +168,10 @@ Compound `bootstyle` strings work just like `ttkbootstrap`:
 
 ### Switching & Toggling Themes at Runtime
 
-All `ModernTkk` widgets subscribe automatically to `ThemeManager` and redraw seamlessly when the theme changes—including updating Windows 11 native DWM dark/light titlebars:
+All `ModernTtk` widgets subscribe automatically to `ThemeManager` and redraw seamlessly when the theme changes—including updating Windows 11 native DWM dark/light titlebars:
 
 ```python
-import moderntkk as mtk
+import modernttk as mtk
 
 # Apply a specific theme by name (or "system" to auto-detect OS dark/light mode!)
 mtk.set_theme("system", root=app)
@@ -196,7 +197,7 @@ palette = mtk.ThemeManager.instance().palette
 You can register your own custom theme using a Python `dict`, a `ThemePalette` dataclass, or a `.json` file. Any omitted keys automatically inherit from `fluent_dark` or `fluent_light` based on `"mode"`:
 
 ```python
-import moderntkk as mtk
+import modernttk as mtk
 
 mtk.ThemeManager.instance().register_theme({
     "name": "nord_dark",
@@ -792,10 +793,10 @@ app.deiconify()
 
 ### 6.6 Third-Party Integrations (`Matplotlib`, `tksheet`, Responsive Layouts)
 
-ModernTkk includes built-in theme adapters so scientific/data libraries match your active theme automatically:
+ModernTtk includes built-in theme adapters so scientific/data libraries match your active theme automatically:
 
 ```python
-import moderntkk as mtk
+import modernttk as mtk
 
 # 1. Style a Matplotlib Figure, Axes, and NavigationToolbar2Tk
 mtk.style_matplotlib_figure(figure, ax)
@@ -817,14 +818,76 @@ mtk.ThemeManager.instance().subscribe(lambda palette: (
 mtk.bind_responsive_sections(toolbar_frame, [filter_section, actions_section], breakpoint=850)
 ```
 
+### 6.7 Animated Chronograph Timer, `BusyOverlay` & Uninterrupted Execution
+
+When an application updates a preview canvas or runs heavy background work, users need continuous visual feedback that never freezes mid-task. ModernTtk ships a high-DPI 36-frame chronograph timer and an uninterrupted execution architecture (`modernttk/widgets/timer.py`):
+
+#### 1. Standalone Animated Chronograph Widget (`mtk.ActivityTimer` / `mtk.ChronoTimer`)
+Renders a `168×188` subpixel-anti-aliased frosted glassmorphic chronograph medallion (with 12 wake-illuminated dial ticks, a tapered conical comet sweep with leading bloom halo, a rotating stopwatch hand, and a 2× supersampled `"1.2s • 65%"` readout pill) at 30 FPS (`33 ms`):
+```python
+timer = mtk.ActivityTimer(parent, bootstyle="primary", autostart=True)
+timer.pack(pady=8)
+
+# Advance progress monotonically and glide smoothly toward the next stage ceiling:
+timer.set_progress(35.0, ceiling=64.0)
+timer.stop()
+```
+
+#### 2. Non-Blocking Canvas Busy Overlay (`mtk.BusyOverlay` / `ModernBusyOverlay`)
+Attaches the centered `168×188` animated chronograph timer (`tag="busy_overlay"`) over one or more target `tk.Canvas` viewports (e.g., edited output canvases, while leaving original/reference canvases untouched) and synchronizes an optional `ModernProgressBar`:
+```python
+busy_overlay = mtk.BusyOverlay(
+    app,
+    canvases=(canvas_edited, canvas_inspector),  # Never touches original/reference canvases
+    progress_bar=progress_bar,
+    bootstyle="primary",
+)
+
+# Start 30 FPS rotation + automatic stage-ceiling progress gliding:
+busy_overlay.start(initial_pct=5.0, initial_ceiling=16.0)
+busy_overlay.set_progress(38.0)   # Glides smoothly toward 64% between milestones
+busy_overlay.stop()               # Clears "busy_overlay" items from all canvases
+```
+
+#### 3. Why Timers Freeze at ~35% & How to Run Uninterrupted (`mtk.SubprocessWorker` + `mtk.TaskRunner`)
+- **The Problem**: Python's `threading.Thread` shares a single Global Interpreter Lock (GIL) with the Tkinter GUI thread. If a background thread calls a native C/Rust extension (`vtracer`, `resvg_py`, heavy image/numerical kernels) that holds the GIL for 0.5–1.5 seconds, Tkinter's `after(33, ...)` loop is starved and the animated clock stops mid-spin (e.g., at 35%).
+- **The Solution (Two-Part Uninterrupted Architecture)**:
+  1. **GIL-Free Subprocess Offloading (`mtk.SubprocessWorker` + `mtk.run_subprocess_worker_loop`)**: Execute GIL-holding native extensions inside a persistent child process over length-prefixed binary stdio IPC (`ModernSubprocessWorker.should_offload()`). Pre-warm the worker on startup (`worker.prewarm()`) so the main Tkinter process never experiences GIL contention.
+  2. **Stage-Ceiling Gliding + `mtk.TaskRunner`**: Stream fine-grained `(pct, message)` milestones over a `queue.SimpleQueue` polled every `25 ms`, while `ModernBusyOverlay` glides `pct` smoothly toward the current stage ceiling (`step = max(0.22, (ceiling - pct) * 0.055)`) on every `33 ms` tick:
+
+```python
+import sys
+import modernttk as mtk
+
+# 1. Early in your entrypoint (before GUI imports), handle the worker flag:
+if len(sys.argv) >= 2 and sys.argv[1] == "--native-worker":
+    raise SystemExit(mtk.run_subprocess_worker_loop({
+        "heavy_op": lambda data: run_native_extension(data),
+    }))
+
+# 2. Create & pre-warm the persistent GIL-free subprocess client:
+WORKER = mtk.SubprocessWorker(script_path=__file__, worker_flag="--native-worker")
+WORKER.prewarm()
+
+# 3. Coordinate background tasks with uninterrupted 30 FPS overlay animation:
+runner = mtk.TaskRunner(app, overlay=busy_overlay, progress_bar=progress_bar)
+runner.start(
+    lambda progress_cb: (
+        progress_cb(30.0, "Running native stage in GIL-free worker..."),
+        WORKER.request(("heavy_op", payload)),
+    )[-1],
+    on_done=lambda result: render_output(result),
+)
+```
+
 ---
 
 ## 7. Migrating from `sv_ttk` and `ttkbootstrap`
 
 ### From `sv_ttk`
-| `sv_ttk` | `moderntkk` |
+| `sv_ttk` | `modernttk` |
 | :--- | :--- |
-| `import sv_ttk` | `import moderntkk as mtk` |
+| `import sv_ttk` | `import modernttk as mtk` |
 | `sv_ttk.set_theme("dark")` | `mtk.set_theme("fluent_dark")` (or `mtk.set_theme("dark")`) |
 | `sv_ttk.set_theme("light")` | `mtk.set_theme("fluent_light")` (or `mtk.set_theme("light")`) |
 | `sv_ttk.toggle_theme()` | `mtk.toggle_theme()` |
@@ -832,7 +895,7 @@ mtk.bind_responsive_sections(toolbar_frame, [filter_section, actions_section], b
 | `sv_ttk.use_light_theme()` | `mtk.use_light_theme()` |
 
 ### From `ttkbootstrap`
-| `ttkbootstrap` | `moderntkk` |
+| `ttkbootstrap` | `modernttk` |
 | :--- | :--- |
 | `tb.Window(themename="darkly")` | `mtk.ModernWindow(themename="darkly")` |
 | `tb.Button(parent, text="OK", bootstyle="success-outline")` | `mtk.Button(parent, text="OK", bootstyle="success-outline")` |
@@ -844,12 +907,12 @@ mtk.bind_responsive_sections(toolbar_frame, [filter_section, actions_section], b
 
 ## 8. Packaging & Releasing to GitHub / PyPI
 
-If you decide to publish **ModernTkk** to GitHub and PyPI for the broader Python community:
+If you decide to publish **ModernTtk** to GitHub and PyPI for the broader Python community:
 
 ### 1. Repository Structure
 ```text
-ModernTkk/
-├── moderntkk/
+ModernTtk/
+├── modernttk/
 │   ├── __init__.py          # Public API & ergonomic aliases
 │   ├── icons.py             # 28 procedural 4x supersampled vector icons
 │   ├── style.py             # ThemeManager, OS theme detection & auto_theme_tree
@@ -867,6 +930,7 @@ ModernTkk/
 │       ├── table.py         # ModernTreeview (DataTable), ModernScrollbar
 │       ├── advanced.py      # ModernMeter, ModernText (Code/Log), ModernAccordion, ModernTagInput
 │       ├── navigation.py    # ModernSidebar, ModernContextMenu, ModernCommandPalette (Ctrl+K)
+│       ├── timer.py         # ActivityTimer, BusyOverlay, SubprocessWorker & TaskRunner (Uninterrupted 30 FPS)
 │       └── enterprise.py    # MetricCard, StatusBar, ScrollableFrame, ProgressDialog, Splash, Adapters
 ├── demo.py                  # Interactive 5-page showcase gallery with Sidebar & Ctrl+K
 ├── instructions.md          # Complete developer documentation & API reference
@@ -876,12 +940,12 @@ ModernTkk/
 
 ### 2. Initialize Git & Push to GitHub
 ```bash
-cd p:\ModernTkk
+cd p:\ModernTtk
 git init
 git add .
-git commit -m "Initial release of ModernTkk v0.1.0"
+git commit -m "Initial release of ModernTtk v0.1.0"
 git branch -M main
-git remote add origin https://github.com/<your-username>/moderntkk.git
+git remote add origin https://github.com/<your-username>/modernttk.git
 git push -u origin main
 ```
 
@@ -893,4 +957,4 @@ twine upload dist/*
 ```
 
 ### 4. PyInstaller / Nuitka Compilation Notes
-Because `ModernTkk` generates all rounded shapes, checkmarks, and splash cards procedurally in memory via `Pillow` (`PIL.ImageDraw`) rather than relying on external `.tcl` scripts or sprite-sheet image folders, **it requires zero extra `--add-data` theme asset flags** when freezing applications with PyInstaller or Nuitka.
+Because `ModernTtk` generates all rounded shapes, checkmarks, and splash cards procedurally in memory via `Pillow` (`PIL.ImageDraw`) rather than relying on external `.tcl` scripts or sprite-sheet image folders, **it requires zero extra `--add-data` theme asset flags** when freezing applications with PyInstaller or Nuitka.
